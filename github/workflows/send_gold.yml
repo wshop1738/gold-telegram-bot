@@ -1,27 +1,32 @@
 name: Send Gold Price
 
+# Trigger workflow every hour and allow manual run
 on:
   schedule:
-    - cron: "0 * * * *"   # every hour
-  workflow_dispatch:      # manual run button
+    - cron: "0 * * * *"   # every hour at minute 0
+  workflow_dispatch:      # manual trigger
 
 jobs:
-  run:
+  send:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      # 1️⃣ Checkout repository
+      - name: Checkout repository
         uses: actions/checkout@v4
 
+      # 2️⃣ Setup Python
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.11"
 
-      - name: Install libraries
+      # 3️⃣ Install dependencies
+      - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Run script
+      # 4️⃣ Run gold price bot
+      - name: Run gold price bot
         run: python send.py
         env:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
